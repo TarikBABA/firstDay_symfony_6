@@ -26,4 +26,14 @@ class FirstController extends AbstractController
             'prénom' => $firstName
         ]);
     }
+
+    // #[Route('/multi/{entier1}/{entier2}')]
+    /**
+     * @Route("/first/multi/{entier1}/{entier2}")
+     */
+    public function multiplication($entier1, $entier2)
+    {
+        $result = $entier1 * $entier2;
+        return new Response("<h1>$result</h1>");
+    }
 }
