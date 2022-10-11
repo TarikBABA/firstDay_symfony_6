@@ -9,9 +9,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route("/todo")]
 class ToDoControlerController extends AbstractController
 {
-    #[Route('/todo', name: 'todo')]
+    /**
+     * @Route("/",name="todo")
+     */
     public function index(Request $request): Response
     {
         $session = $request->getSession();
@@ -30,7 +33,11 @@ class ToDoControlerController extends AbstractController
         return $this->render('to_do_controler/todo.html.twig');
     }
 
-    #[Route('/todo/add/{name}/{content}', name: 'todo_add')]
+    #[Route(
+        '/add/{name}/{content}',
+        name: 'todo_add',
+        defaults: ['content' => 'sf6']
+    )]
     public function addToDo(Request $request, $name, $content): RedirectResponse
 
     {
@@ -53,7 +60,7 @@ class ToDoControlerController extends AbstractController
         return $this->redirectToRoute('todo');
     }
 
-    #[Route('/todo/set/{name}/{content}', name: 'todo_set')]
+    #[Route('/set/{name}/{content}', name: 'todo_set')]
     public function setToDo(Request $request, $name, $content): RedirectResponse
 
     {
@@ -76,7 +83,7 @@ class ToDoControlerController extends AbstractController
         return $this->redirectToRoute('todo');
     }
 
-    #[Route('/todo/delete/{name}/', name: 'todo_delete')]
+    #[Route('/delete/{name}/', name: 'todo_delete')]
     public function deleteToDo(Request $request, $name): RedirectResponse
 
     {
@@ -98,7 +105,7 @@ class ToDoControlerController extends AbstractController
         return $this->redirectToRoute('todo');
     }
 
-    #[Route('/todo/reset/{name}/', name: 'todo_reset')]
+    #[Route('/reset/{name}/', name: 'todo_reset')]
     public function resetToDo(Request $request, $name)
 
     {
