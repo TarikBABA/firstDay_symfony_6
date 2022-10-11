@@ -9,6 +9,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FirstController extends AbstractController
 {
+    #[Route('/order/{var}', name: 'test.order.route')]
+    public function testOrderRoute($var)
+    {
+        return new Response("<html><body> $var</body></html>");
+    }
+
     #[Route('/first', name: 'app_first')]
     public function index(): Response
     {
@@ -27,10 +33,7 @@ class FirstController extends AbstractController
         ]);
     }
 
-    // #[Route('/multi/{entier1}/{entier2}')]
-    /**
-     * @Route("/first/multi/{entier1}/{entier2}")
-     */
+    #[Route('/first/multi/{entier1<\d+>}/{entier2<\d+>}', name: 'multiplication')]
     public function multiplication($entier1, $entier2)
     {
         $result = $entier1 * $entier2;
