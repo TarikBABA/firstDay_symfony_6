@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\TwigExtensions;
+// use App\TwigExtensions\MyCustomTwigExtensions;
 
 class FirstController extends AbstractController
 {
@@ -19,17 +21,18 @@ class FirstController extends AbstractController
     public function index(): Response
     {
         return $this->render('first/index.html.twig', [
-            'controller_name' => 'le 1er controller',
+            'controller_name' => 'le 1er controller'
         ]);
     }
 
     #[Route('/sayHola/{name}/{firstName}', name: 'say_Hola')]
     public function sayHola(Request $request, $name, $firstName): Response
     {
-        dd($request);
+        // dd($request);
         return $this->render('first/hola.html.twig', [
             'nom' => $name,
-            'prénom' => $firstName
+            'prénom' => $firstName,
+            'path' => '      '
         ]);
     }
 
