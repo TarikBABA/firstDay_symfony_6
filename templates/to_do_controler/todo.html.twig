@@ -28,12 +28,12 @@
     {{message}}
     </div>
 {% endfor %}
-
+<h3>{{"now" | date('d/m/Y')}}</h3>
 <h1 class='title text-center'> Liste des todo</h1>
     <ol class="list-group">
     {% for name,content in app.session.get('todos') %}
         <li class="list-group-item text-center">
-       {{name}} : {{content}}
+       {{name|upper}} : {{content}}
          </li>
     {% endfor %}
     </ol>
