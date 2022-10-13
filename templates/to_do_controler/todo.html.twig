@@ -1,41 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link  href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet"/>
-    <title>TodOS</title>
-</head>
-<body>
-    
+{% extends "template.html.twig" %}
 
-{% for message in app.session.flashBag.get('info') %}
-    <div class="alert alert-info">
-    {{message}}
-    </div>
-{% endfor %}
+{% block body %}
+	{% block pageTitle %}
+		Liste des todo
+	{% endblock %}
 
-{% for message in app.session.flashBag.get('success') %}
-    <div class="alert alert-success">
-    {{message}}
-    </div>
-{% endfor %}
 
-{% for message in app.session.flashBag.get('error') %}
-    <div class="alert alert-danger">
-    {{message}}
-    </div>
-{% endfor %}
-<h3>{{"now" | date('d/m/Y')}}</h3>
-<h1 class='title text-center'> Liste des todo</h1>
-    <ol class="list-group">
-    {% for name,content in app.session.get('todos') %}
-        <li class="list-group-item text-center">
-       {{name|upper}} : {{content}}
-         </li>
-    {% endfor %}
-    </ol>
-</body>
-</html>
+	<h3>{{"now" | date('d/m/Y')}}</h3>
+
+	<ol class="list-group">
+		{% for name,content in app.session.get('todos') %}
+			<li class="list-group-item text-center">
+				{{name|upper}}
+				:
+				{{content}}
+			</li>
+		{% endfor %}
+	</ol>
+{% endblock %}
+{% block title %}
+	TodO
+{% endblock %}
