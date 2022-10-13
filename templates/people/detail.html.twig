@@ -1,0 +1,14 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}Hello PeopleController!
+{% endblock %}
+{% block body %}
+	{{ dump(person) }}
+	<div class="alert alert-success">
+		{{person.firstname}}
+		{{person.name}}
+		{{person.age}}
+
+
+	</div>
+{% endblock %}
