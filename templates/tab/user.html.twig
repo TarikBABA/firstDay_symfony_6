@@ -19,8 +19,7 @@
     </tr>
     {% for user in users %}
         
-    <tr class="table-{% if loop.index0 is odd %}warning{% else %}danger{% endif %}
-    }}">
+    <tr class="table-{% if loop.index0 is odd %}warning{% else %}danger{% endif %}">
         <td>{{user.firstName}}</td>
         <td>{{user.name}}</td>
         <td>{{user.age}}</td>

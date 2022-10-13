@@ -1,11 +1,11 @@
 <?php
 
-namespace App\TwigExtensions;
+namespace App\TwigExtensionTest;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-class MyCustomTwigExtensions extends AbstractExtension
+class MyCustomTwigExtension extends AbstractExtension
 {
     public function getFilters()
     {
