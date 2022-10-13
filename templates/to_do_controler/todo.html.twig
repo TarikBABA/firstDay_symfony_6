@@ -5,9 +5,6 @@
 		Liste des todo
 	{% endblock %}
 
-
-	<h3>{{"now" | date('d/m/Y')}}</h3>
-
 	<ol class="list-group">
 		{% for name,content in app.session.get('todos') %}
 			<li class="list-group-item text-center">

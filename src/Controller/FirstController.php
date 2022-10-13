@@ -23,22 +23,23 @@ class FirstController extends AbstractController
         return new Response("<html><body> $var</body></html>");
     }
 
-    #[Route('/first', name: 'app_first')]
+    #[Route('/first', name: 'first')]
     public function index(): Response
     {
         return $this->render('first/index.html.twig', [
-            'controller_name' => 'le 1er controller'
+            'name' => 'BABA',
+            'firstName' => 'Tarik'
         ]);
     }
 
-    #[Route('/sayHola/{name}/{firstName}', name: 'say_Hola')]
+    // #[Route('/sayHola/{name}/{firstName}', name: 'say_Hola')]
     public function sayHola(Request $request, $name, $firstName): Response
     {
         // dd($request);
         return $this->render('first/hola.html.twig', [
             'nom' => $name,
             'prénom' => $firstName,
-            'path' => '   '
+            // 'path' => '   '
         ]);
     }
 
