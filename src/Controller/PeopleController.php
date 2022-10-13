@@ -19,8 +19,14 @@ class PeopleController extends AbstractController
         $person->setName('BABA');
         $person->setAge('2');
 
+        // $person2 = new People();
+        // $person2->setFirstname('Omar');
+        // $person2->setName('BABA');
+        // $person2->setAge('27');
+
         //* ajouter l'opération d'insertion de person dans ma transaction
         $entityManager->persist($person);
+        // $entityManager->persist($person2);
         //* Excuter la transaction #ToDo
         $entityManager->flush();
 
