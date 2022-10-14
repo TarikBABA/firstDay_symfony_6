@@ -1,0 +1,29 @@
+{% extends "template.html.twig" %}
+{% block title %}
+	List of People
+{% endblock %}
+
+{% block pageTitle %}
+	People
+{% endblock %}
+{% block body %}
+	<div class="row">
+		{% for person in allPeople %}
+			<div class="col-3">
+				<div class="card bg-light mb-3" style="max-width: 18rem;">
+					<div class="card-header">en mission</div>
+					<div class="card-body">
+						<h5 class="card-title">{{person.firstname}}
+							{{person.name}}</h5>
+						<p class="card-text">
+							Son âge est de
+							{{person.age}}.</p>
+					</div>
+				</div>
+
+
+			</div>
+		{% endfor %}
+
+	</div>
+{% endblock %}

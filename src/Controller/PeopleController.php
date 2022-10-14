@@ -8,9 +8,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/people')]
 class PeopleController extends AbstractController
 {
-    #[Route('/people/add', name: 'app_people')]
+    #[Route('/', name: 'people')]
+    public function index(ManagerRegistry $doctrine): Response
+    {
+        $repository = $doctrine->getRepository(People::class);
+        $allPeople = $repository->findAll();
+        return $this->render('people/index.html.twig', [
+            'allPeople' => $allPeople
+        ]);
+    }
+
+    #[Route('/add', name: 'add_people')]
     public function addPerson(ManagerRegistry $doctrine): Response
     {
         $entityManager = $doctrine->getManager();
@@ -30,7 +41,7 @@ class PeopleController extends AbstractController
         //* Excuter la transaction #ToDo
         $entityManager->flush();
 
-        return $this->render('people/detail.html.twig', [
+        return $this->render('people/person.html.twig', [
             'person' => $person,
         ]);
     }
