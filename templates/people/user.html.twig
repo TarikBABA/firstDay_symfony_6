@@ -1,0 +1,25 @@
+{% extends "template.html.twig" %}
+{% block title %}
+	{{user.name}}
+{% endblock %}
+{% block pageTitle %}
+	Profil de
+	{{user.firstname}}
+{% endblock %}
+{% block body %}
+	<div class="row">
+		<div class="col-3">
+			<div class="card bg-light mb-3" style="max-width: 18rem;">
+				<div class="card-header">en mission</div>
+				<div class="card-body">
+					<h5 class="card-title">{{user.firstname}}
+						{{user.name}}</h5>
+
+					<p class="card-text">
+						Âge renseigné
+						{{user.age}}.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

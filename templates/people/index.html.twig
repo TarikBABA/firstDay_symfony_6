@@ -11,7 +11,6 @@
 		{% for person in allPeople %}
 			<div class="col-3">
 				<div class="card bg-light mb-3" style="max-width: 18rem;">
-					<div class="card-header">en mission</div>
 					<div class="card-body">
 						<h5 class="card-title">{{person.firstname}}
 							{{person.name}}</h5>
@@ -19,11 +18,11 @@
 							Son âge est de
 							{{person.age}}.</p>
 					</div>
+					<div class="card-header">
+						<a href="{{ path('user', {id: person.id}) }}">Show Profil</a>
+					</div>
 				</div>
-
-
 			</div>
 		{% endfor %}
-
 	</div>
 {% endblock %}

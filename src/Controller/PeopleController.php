@@ -21,6 +21,39 @@ class PeopleController extends AbstractController
         ]);
     }
 
+    // #[Route('/{id<\d+>}', name: 'user')]
+    // public function user(ManagerRegistry $doctrine, $id): Response
+    // {
+    //     $repository = $doctrine->getRepository(People::class);
+    //     $person = $repository->find($id);
+
+    //     if (!$person) {
+    //         $this->addFlash(
+    //             'error',
+    //             "l'id $id n'exsiste pas !"
+    //         );
+    //         return $this->redirectToRoute('people');
+    //     }
+    //     return $this->render('people/user.html.twig', [
+    //         'user' => $person
+    //     ]);
+    // }
+
+    #[Route('/{id<\d+>}', name: 'user')]
+    public function user(People $person): Response
+    {
+        if (!$person) {
+            $this->addFlash(
+                'error',
+                "l'id n'exsiste pas !"
+            );
+            return $this->redirectToRoute('people');
+        }
+        return $this->render('people/user.html.twig', [
+            'user' => $person
+        ]);
+    }
+
     #[Route('/add', name: 'add_people')]
     public function addPerson(ManagerRegistry $doctrine): Response
     {
