@@ -11,13 +11,43 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/people')]
 class PeopleController extends AbstractController
 {
-    #[Route('/', name: 'people')]
-    public function index(ManagerRegistry $doctrine): Response
+    //? Show All people 1 page
+    // #[Route('/', name: 'people')]
+    // public function index(ManagerRegistry $doctrine): Response
+    // {
+    //     $repository = $doctrine->getRepository(People::class);
+    //     $allPeople = $repository->findAll();
+    //     return $this->render('people/index.html.twig', [
+    //         'allPeople' => $allPeople
+    //     ]);
+    // }
+
+
+    // ? Show All where condition = true
+    // #[Route('/', name: 'people')]
+    // public function index(ManagerRegistry $doctrine): Response
+    // {
+    //     $repository = $doctrine->getRepository(People::class);
+    //     $allPeople = $repository->findBy(['name' => 'baba'], ['age' => 'DESC']);
+    //     return $this->render('people/index.html.twig', [
+    //         'allPeople' => $allPeople
+    //     ]);
+    // }
+
+    // ? Show All with Pagination
+    #[Route('/{page?1}/{nbr?12}', name: 'people')]
+    public function index(ManagerRegistry $doctrine, $nbr, $page): Response
     {
         $repository = $doctrine->getRepository(People::class);
-        $allPeople = $repository->findAll();
+        $nbPeople = $repository->count([]);
+        $nbPages = ceil($nbPeople / $nbr);
+        $allPeople = $repository->findBy([], [], $nbr, (($page - 1) * $nbr));
         return $this->render('people/index.html.twig', [
-            'allPeople' => $allPeople
+            'allPeople' => $allPeople,
+            'isPaginated' => true,
+            'nbPages' => $nbPages,
+            'nbr' => $nbr,
+            'page' => $page
         ]);
     }
 
