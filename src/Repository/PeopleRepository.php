@@ -39,28 +39,31 @@ class PeopleRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return People[] Returns an array of People objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return People[] Returns an array of People objects
+    //     */
 
-//    public function findOneBySomeField($value): ?People
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    // public function findPeopleByAgeInterval($ageMin, $ageMax): array
+    // {
+    //     return $this->createQueryBuilder('p')
+    //         ->andWhere('p.age >= :ageMin' and 'p.age' <= ':ageMax')
+
+    //         // ->setParameter('ageMin', $ageMin)
+    //         // ->setParameter('ageMax', $ageMax)
+
+    //         // ? Better Syntax if more param
+    //         ->setParameters(['ageMin' => $ageMin, 'ageMax' => $ageMax])
+
+    //         ->getQuery()
+    //         ->getResult();
+    // }
+
+    public function findOneBySomeField($value): ?People
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.exampleField = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

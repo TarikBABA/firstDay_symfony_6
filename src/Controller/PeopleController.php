@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\People;
+
+use App\Repository\PeopleRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,6 +26,36 @@ class PeopleController extends AbstractController
         ]);
     }
 
+    // #[Route("/dql/{ageMin}/{ageMax}", name: 'dql')]
+    // public function peopleByAge($ageMin, $ageMax, PeopleRepository $repository)
+    // {
+    //     // /** @var PeopleRepository $respository */
+    //     $people = $repository->findPeopleByAgeInterval($ageMin, $ageMax);
+    //     return $this->render('people/index.html.twig', [
+    //         'isPaginated' => false,
+    //         'allPeople' => $people
+    //     ]);
+    // }
+
+
+    // !-------------------------------------------------------------------------------
+    // #[Route("/dql/{ageMin}/{ageMax}", name: 'dql')]
+    // public function peopleByAge(ManagerRegistry $doctrine, $ageMin, $ageMax)
+    // {
+    //     /** @var PeopleRepository $respository */
+
+    //     $repository = $doctrine->getRepository(People::class);
+    //     // dd($repository);
+
+    //     $people = $repository->findPeopleByAgeInterval($ageMin, $ageMax);
+    //     return $this->render('people/index.html.twig', [
+    //         'isPaginated' => false,
+    //         'allPeople' => $people
+    //     ]);
+    // }
+
+    // !--------------------------------------------------------------------------------
+
     #[Route('/test', name: 'people.test')]
     public function indexByName(ManagerRegistry $doctrine): Response
     {
@@ -39,6 +71,7 @@ class PeopleController extends AbstractController
     #[Route('/pages/{page?1}/{nbr?12}', name: 'people.pagination')]
     public function indexPagination(ManagerRegistry $doctrine, $nbr, $page): Response
     {
+
         $repository = $doctrine->getRepository(People::class);
         $nbPeople = $repository->count([]);
         $nbPages = ceil($nbPeople / $nbr);
