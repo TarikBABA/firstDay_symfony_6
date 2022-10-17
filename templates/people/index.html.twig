@@ -19,7 +19,8 @@
 							{{person.age}}.</p>
 					</div>
 					<div class="card-header">
-						<a href="{{ path('user', {id: person.id}) }}">Show Profil</a>
+						<a href="{{ path('details.user', {id: person.id}) }}">Details</a>
+						<a href="{{ path('delete.people', {id: person.id}) }}">Delete</a>
 					</div>
 				</div>
 			</div>
@@ -31,18 +32,18 @@
 			<ul class="pagination pagination-lg">
 				{% if page != 1 %}
 					<li class="page-item">
-						<a class="page-link" href="{{ path('people', {page : (page - 1), nbr : nbr}) }}">&laquo; Previous</a>
+						<a class="page-link" href="{{ path('people.pagination', {page : (page - 1), nbr : nbr}) }}">&laquo; Previous</a>
 					</li>
 				{% endif %}
 				{% for i in range(1, nbPages) %}
 					<li class="page-item active">
-						<a class="page-link" href="{{ path('people', {page : i, nbr : nbr}) }}">{{i}}
+						<a class="page-link" href="{{ path('people.pagination', {page : i, nbr : nbr}) }}">{{i}}
 						</a>
 					</li>
 				{% endfor %}
 				{% if page != nbPages %}
 					<li class="page-item">
-						<a class="page-link" href="{{ path('people', {page : (page + 1), nbr : nbr}) }}">&raquo; Next</a>
+						<a class="page-link" href="{{ path('people.pagination', {page : (page + 1), nbr : nbr}) }}">&raquo; Next</a>
 					</li>
 				{% endif %}
 			</ul>
