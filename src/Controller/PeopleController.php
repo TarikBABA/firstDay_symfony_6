@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\People;
-
+use App\Form\PeopleType;
 use App\Repository\PeopleRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -100,32 +100,41 @@ class PeopleController extends AbstractController
         ]);
     }
 
+    // #[Route('/add', name: 'add_people')]
+    // public function addPerson(ManagerRegistry $doctrine): Response
+    // {
+    //     $entityManager = $doctrine->getManager();
+    //     $person = new People();
+    //     $person->setFirstname('Anass');
+    //     $person->setName('BABA');
+    //     $person->setAge('2');
+
+    //     // $person2 = new People();
+    //     // $person2->setFirstname('Omar');
+    //     // $person2->setName('BABA');
+    //     // $person2->setAge('27');
+
+    //     //* ajouter l'opération d'insertion de person dans ma transaction
+    //     $entityManager->persist($person);
+    //     // $entityManager->persist($person2);
+    //     //* Excuter la transaction #ToDo
+    //     $entityManager->flush();
+
+    //     return $this->render('people/person.html.twig', [
+    //         'person' => $person,
+    //     ]);
+    // }
+
     #[Route('/add', name: 'add_people')]
     public function addPerson(ManagerRegistry $doctrine): Response
     {
         $entityManager = $doctrine->getManager();
-        $person = new People();
-        $person->setFirstname('Anass');
-        $person->setName('BABA');
-        $person->setAge('2');
-
-        // $person2 = new People();
-        // $person2->setFirstname('Omar');
-        // $person2->setName('BABA');
-        // $person2->setAge('27');
-
-        //* ajouter l'opération d'insertion de person dans ma transaction
-        $entityManager->persist($person);
-        // $entityManager->persist($person2);
-        //* Excuter la transaction #ToDo
-        $entityManager->flush();
-
-        return $this->render('people/person.html.twig', [
-            'person' => $person,
+        $person = new People(); // $person est l'image de notre form
+        $form = $this->createForm(PeopleType::class, $person);
+        return $this->render('people/add-person.html.twig', [
+            'form' => $form->createView()
         ]);
     }
-
-
 
     // #[Route('/{id<\d+>}', name: 'user')]
     // public function user(ManagerRegistry $doctrine, $id): Response
