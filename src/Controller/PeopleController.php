@@ -7,10 +7,12 @@ use App\Form\PeopleType;
 use App\Repository\PeopleRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/people')]
 class PeopleController extends AbstractController
@@ -127,7 +129,7 @@ class PeopleController extends AbstractController
     // }
 
     #[Route('/edit/{id?0}', name: 'edit_people')]
-    public function addPerson(People $person = null, ManagerRegistry $doctrine, Request $request): Response
+    public function addPerson(People $person = null, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
         $new = false;
 
@@ -146,6 +148,31 @@ class PeopleController extends AbstractController
         if ($form->isSubmitted()) {
             // dd($person);
             // dd($form->getData($person)); ////* recupération des données de manière classique sans qu'elle soit associé à un objet
+
+            $imageFile = $form->get('photo')->getData();
+
+            // this condition is needed because the 'brochure' field is not required
+            // so the img file must be processed only when a file is uploaded
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $imageFile->move(
+                        $this->getParameter('person_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the img file name
+                // instead of its contents
+                $person->setImage($newFilename);
+            }
 
             $manager = $doctrine->getManager();
             $manager->persist($person);
