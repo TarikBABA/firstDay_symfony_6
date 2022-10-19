@@ -8,6 +8,7 @@ use App\Repository\PeopleRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -125,17 +126,45 @@ class PeopleController extends AbstractController
     //     ]);
     // }
 
-    #[Route('/add', name: 'add_people')]
-    public function addPerson(ManagerRegistry $doctrine): Response
+    #[Route('/edit/{id?0}', name: 'edit_people')]
+    public function addPerson(People $person = null, ManagerRegistry $doctrine, Request $request): Response
     {
-        $entityManager = $doctrine->getManager();
-        $person = new People(); // $person est l'image de notre form
+        $new = false;
+
+        if (!$person) {
+            $new = true;
+            $person = new People(); // $person est l'image de notre form
+        }
+
         $form = $this->createForm(PeopleType::class, $person);
         $form->remove('createdAt');
         $form->remove('updateAt');
-        return $this->render('people/add-person.html.twig', [
-            'form' => $form->createView()
-        ]);
+
+        // dump($request);
+        $form->handleRequest($request); // mon form va traité la requête
+
+        if ($form->isSubmitted()) {
+            // dd($person);
+            // dd($form->getData($person)); ////* recupération des données de manière classique sans qu'elle soit associé à un objet
+
+            $manager = $doctrine->getManager();
+            $manager->persist($person);
+            $manager->flush();
+
+            if ($new) {
+                $message = "a été ajouté avec succés";
+            } else {
+                $message = "a été edité avec succés";
+            }
+            // $this->addFlash('success', "$message");
+            $this->addFlash('success', $person->getName() . ' ' . $message);
+
+            return $this->redirectToRoute('people');
+        } else {
+            return $this->render('people/add-person.html.twig', [
+                'form' => $form->createView()
+            ]);
+        }
     }
 
     // #[Route('/{id<\d+>}', name: 'user')]

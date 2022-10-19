@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Hobby;
 use App\Entity\People;
+use App\Entity\Profile;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,8 +21,16 @@ class PeopleType extends AbstractType
             ->add('age')
             ->add('createdAt')
             ->add('updateAt')
-            ->add('profile')
-            ->add('Hobbies')
+            ->add('profile', EntityType::class, [
+                'expanded' => true,
+                'class' => Profile::class,
+                'multiple' => false,
+            ])
+            ->add('Hobbies', EntityType::class, [
+                'expanded' => true,
+                'class' => Hobby::class,
+                'multiple' => true,
+            ])
             ->add('Job')
             ->add('editer', SubmitType::class);
     }
