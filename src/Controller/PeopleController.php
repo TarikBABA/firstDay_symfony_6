@@ -131,6 +131,8 @@ class PeopleController extends AbstractController
         $entityManager = $doctrine->getManager();
         $person = new People(); // $person est l'image de notre form
         $form = $this->createForm(PeopleType::class, $person);
+        $form->remove('createdAt');
+        $form->remove('updateAt');
         return $this->render('people/add-person.html.twig', [
             'form' => $form->createView()
         ]);

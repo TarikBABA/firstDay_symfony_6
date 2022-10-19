@@ -3,4 +3,14 @@
 {% block title %}Hello new Person !
 {% endblock %}
 {% block body %}
-	{{form(form)}}{% endblock %}
+	{{form_start(form)}}
+	<div class="row">
+		<div class="col">
+			{{form_row(form.firstname)}}
+		</div>
+		<div class="col">
+			{{form_row(form.name)}}
+		</div>
+	</div>
+	{{form_rest(form)}}
+{% endblock %}
