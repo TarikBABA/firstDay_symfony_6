@@ -3,7 +3,9 @@
 {% block title %}Hello new Person !
 {% endblock %}
 {% block body %}
-	{{form_start(form)}}
+	{{form_start(form, {'attr': {'novalidate': 'novalidate'}})}}
+
+
 	<div class="row">
 		<div class="col">
 			{{form_row(form.firstname)}}

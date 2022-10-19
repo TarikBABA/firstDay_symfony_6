@@ -145,7 +145,7 @@ class PeopleController extends AbstractController
         // dump($request);
         $form->handleRequest($request); // mon form va traité la requête
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             // dd($person);
             // dd($form->getData($person)); ////* recupération des données de manière classique sans qu'elle soit associé à un objet
 

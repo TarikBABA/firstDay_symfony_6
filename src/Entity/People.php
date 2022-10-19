@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PeopleRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PeopleRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -22,6 +23,13 @@ class People
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message : "Veuillez renseigner ce champ")]
+    #[Assert\Length(min:4,max:20, minMessage:"minErrorMessage",maxMessage:"MaxErrorMessage")]
+    // /**
+    //  * @ORM\Column(type="string",length="50")
+    //  * @Assert\NotBlank(message="vide")
+    //  * @Assert\Length(min=4, minMessage="minErrorMessage")
+    //  */
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
