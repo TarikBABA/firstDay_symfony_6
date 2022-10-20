@@ -5,10 +5,13 @@ namespace App\Controller;
 use App\Entity\People;
 use App\Form\PeopleType;
 use App\Service\Helpers;
-use App\Repository\PeopleRepository;
-use App\Service\UploaderService;
-use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
+use App\Service\MailerService;
+use App\Service\UploaderService;
+
+// *use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+//? use App\Repository\PeopleRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,9 +24,12 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class PeopleController extends AbstractController
 {
 
-    public function __construct(private LoggerInterface $logger, private Helpers $helper)
-    {
-        // $this->logger = $logger;
+    public function __construct(
+        private LoggerInterface $logger,
+        private Helpers $helper,
+        private MailerService $mailer
+
+    ) {
     }
 
     //? Show All people 1 page
@@ -140,8 +146,13 @@ class PeopleController extends AbstractController
     // }
 
     #[Route('/edit/{id?0}', name: 'edit_people')]
-    public function addPerson(People $person = null, ManagerRegistry $doctrine, Request $request, UploaderService $uploaderService): Response
-    {
+    public function addPerson(
+        People $person = null,
+        ManagerRegistry $doctrine,
+        Request $request,
+        UploaderService $uploaderService,
+        MailerService $mailer
+    ): Response {
         $new = false;
 
         if (!$person) {
@@ -178,9 +189,12 @@ class PeopleController extends AbstractController
             } else {
                 $message = "a été edité avec succés";
             }
+
+            $mailMessage = $person->getName() . ' ' . $person->getFirstname() . ' ' . $message;
+
             // $this->addFlash('success', "$message");
             $this->addFlash('success', $person->getName() . ' ' . $message);
-
+            $mailer->send(content: $mailMessage);
             return $this->redirectToRoute('people');
         } else {
             return $this->render('people/add-person.html.twig', [
