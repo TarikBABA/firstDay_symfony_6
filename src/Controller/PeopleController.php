@@ -4,19 +4,28 @@ namespace App\Controller;
 
 use App\Entity\People;
 use App\Form\PeopleType;
+use App\Service\Helpers;
 use App\Repository\PeopleRepository;
+use App\Service\UploaderService;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/people')]
 class PeopleController extends AbstractController
 {
+
+    public function __construct(private LoggerInterface $logger, private Helpers $helper)
+    {
+        // $this->logger = $logger;
+    }
+
     //? Show All people 1 page
     #[Route('/', name: 'people')]
     public function index(ManagerRegistry $doctrine): Response
@@ -98,6 +107,8 @@ class PeopleController extends AbstractController
             );
             return $this->redirectToRoute('people');
         }
+        // $helpers = new Helpers();
+        echo $this->helper->sayHello();
         return $this->render('people/user.html.twig', [
             'user' => $person
         ]);
@@ -129,7 +140,7 @@ class PeopleController extends AbstractController
     // }
 
     #[Route('/edit/{id?0}', name: 'edit_people')]
-    public function addPerson(People $person = null, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
+    public function addPerson(People $person = null, ManagerRegistry $doctrine, Request $request, UploaderService $uploaderService): Response
     {
         $new = false;
 
@@ -147,31 +158,15 @@ class PeopleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // dd($person);
-            // dd($form->getData($person)); ////* recupération des données de manière classique sans qu'elle soit associé à un objet
+            // dd($form->getData($person)); 
+            ////* recupération des données de manière classique sans qu'elle soit associé à un objet
 
             $imageFile = $form->get('photo')->getData();
-
-            // this condition is needed because the 'brochure' field is not required
-            // so the img file must be processed only when a file is uploaded
             if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+                $directory = $this->getParameter('person_directory');
 
-                // Move the file to the directory where brochures are stored
-                try {
-                    $imageFile->move(
-                        $this->getParameter('person_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
 
-                // updates the 'brochureFilename' property to store the img file name
-                // instead of its contents
-                $person->setImage($newFilename);
+                $person->setImage($uploaderService->uploadFile($imageFile, $directory));
             }
 
             $manager = $doctrine->getManager();
