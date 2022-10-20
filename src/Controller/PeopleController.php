@@ -27,7 +27,7 @@ class PeopleController extends AbstractController
     public function __construct(
         private LoggerInterface $logger,
         private Helpers $helper,
-        private MailerService $mailer
+        // private MailerService $mailer
 
     ) {
     }
