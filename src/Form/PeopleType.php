@@ -2,17 +2,18 @@
 
 namespace App\Form;
 
+use App\Entity\Job;
 use App\Entity\Hobby;
 use App\Entity\People;
 use App\Entity\Profile;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\File;
 
 class PeopleType extends AbstractType
 {
@@ -26,21 +27,34 @@ class PeopleType extends AbstractType
             ->add('updateAt')
             ->add('profile', EntityType::class, [
                 'expanded' => true,
-                'required' => false,
                 'class' => Profile::class,
+                'required' => false,
                 'multiple' => false,
+                'attr'   =>  [
+                'class'   => 'select2'
+                ]
             ])
             ->add('Hobbies', EntityType::class, [
-                'expanded' => true,
+                'expanded' => false,
                 'class' => Hobby::class,
                 'multiple' => true,
+                'required' => false,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('h')
                         ->orderBy('h.designation', 'ASC');
                 },
-                'choice_label' => 'designation' // cela fait le travail à la place de la function public _toString
+                'choice_label' => 'designation', // cela fait le travail à la place de la function public _toString
+                'attr'   =>  [
+                'class'   => 'select2'
+                ]
             ])
-            ->add('Job')
+            ->add('Job', EntityType::class, [
+                'required' => false,
+                'class' => Job::class,
+                'attr'   =>  [
+                'class'   => 'select2'
+                ]
+            ])
             ->add('photo', FileType::class, [
                 'label' => 'Votre image de profil (file img only)',
 
