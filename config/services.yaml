@@ -22,5 +22,8 @@ services:
 
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones
-#   App\TwigExtensionTest\MyCustomTwigExtension:
-#     tags: ["twig.extension"]
+  #   App\TwigExtensionTest\MyCustomTwigExtension:
+  #     tags: ["twig.extension"]
+  App\Service\MailerService:
+    arguments:
+      $replyTo: "bta.app.dev@gmail.com"
