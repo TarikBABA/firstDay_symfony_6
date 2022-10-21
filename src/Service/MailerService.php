@@ -7,10 +7,12 @@ use Symfony\Component\Mime\Email;
 
 class MailerService
 {
-    private $replyTo;
-    public function __construct(private MailerInterface $mailer, $replyTo)
-    {
-        $this->replayTo = $replyTo;
+    // private $replyTo;
+    public function __construct(
+        private MailerInterface $mailer,
+        // $replyTo
+    ) {
+        // $this->replayTo = $replyTo;
     }
 
     public function send(
@@ -24,7 +26,7 @@ class MailerService
             ->to($to)
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
-            ->replyTo($this->replyTo)
+            // ->replyTo($this->replyTo)
             //->priority(Email::PRIORITY_HIGH)
             ->subject($subject)
             ->text('Sending emails is fun again!')
