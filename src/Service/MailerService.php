@@ -17,6 +17,7 @@ class MailerService
         $subject = 'Time for Symfony Mailer!'
     ): void {
         $email = (new Email())
+
             ->from('bta.app.dev@gmail.com')
             ->to($to)
             //->cc('cc@example.com')

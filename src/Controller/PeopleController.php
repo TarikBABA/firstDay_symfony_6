@@ -7,6 +7,7 @@ use App\Form\PeopleType;
 use App\Service\Helpers;
 use Psr\Log\LoggerInterface;
 use App\Service\MailerService;
+use App\Service\PdfService;
 use App\Service\UploaderService;
 
 // *use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -113,12 +114,23 @@ class PeopleController extends AbstractController
             );
             return $this->redirectToRoute('people');
         }
-        // $helpers = new Helpers();
-        echo $this->helper->sayHello();
+        //// $helpers = new Helpers();
+        // echo $this->helper->sayHello();
+
         return $this->render('people/user.html.twig', [
             'user' => $person
         ]);
     }
+
+    #[Route("/pdf/{id}", name: "pdf_person")]
+    public function generatePdf(People $person = null, PdfService $pdf)
+    {
+        $html = $this->render('people/person.html.twig', [
+            'person' => $person,
+        ]);
+        $pdf->showPdf($html);
+    }
+
 
     // #[Route('/add', name: 'add_people')]
     // public function addPerson(ManagerRegistry $doctrine): Response
@@ -153,6 +165,7 @@ class PeopleController extends AbstractController
         UploaderService $uploaderService,
         MailerService $mailer
     ): Response {
+
         $new = false;
 
         if (!$person) {
@@ -194,6 +207,7 @@ class PeopleController extends AbstractController
 
             // $this->addFlash('success', "$message");
             $this->addFlash('success', $person->getName() . ' ' . $message);
+
             $mailer->send(content: $mailMessage);
             return $this->redirectToRoute('people');
         } else {
