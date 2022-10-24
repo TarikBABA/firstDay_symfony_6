@@ -7,12 +7,12 @@ use Symfony\Component\Mime\Email;
 
 class MailerService
 {
-    // private $replyTo;
+    private $mailer;
     public function __construct(
-        private MailerInterface $mailer,
+        MailerInterface $mailer,
         // $replyTo
     ) {
-        // $this->replayTo = $replyTo;
+        $this->mailer = $mailer;
     }
 
     public function send(

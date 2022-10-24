@@ -20,6 +20,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 #[Route('/people')]
 class PeopleController extends AbstractController
@@ -281,5 +283,23 @@ class PeopleController extends AbstractController
             );
         }
         return $this->redirectToRoute('people.pagination');
+    }
+    #[Route("/testmail", name: "testmail")]
+    public function sendEmail(MailerInterface $mailer): Response
+    {
+        $email = (new Email())
+            ->from('hello@example.com')
+            ->to('you@example.com')
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Time for Symfony Mailer!')
+            ->text('Sending emails is fun again!')
+            ->html('<p>See Twig integration for better HTML integration!</p>');
+
+        // dd($mailer);
+        $mailer->send($email);
+        return $this->render('people/testmail.html.twig');
     }
 }
