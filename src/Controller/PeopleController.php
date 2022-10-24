@@ -199,6 +199,7 @@ class PeopleController extends AbstractController
 
             if ($new) {
                 $message = "a été ajouté avec succés";
+                $person->setCreatedBy($this->getUser());
             } else {
                 $message = "a été edité avec succés";
             }

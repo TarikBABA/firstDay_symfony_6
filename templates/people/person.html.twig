@@ -8,5 +8,9 @@
 		{{person.firstname}}
 		{{person.name}}
 		{{person.age}}
+		{% if app.user %}
+			<p>Created By :
+				{{app.user.email}}</p>
+		{% endif %}
 	</div>
 {% endblock %}
