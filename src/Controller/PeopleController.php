@@ -218,12 +218,8 @@ class PeopleController extends AbstractController
                 $this->dispatcher->dispatch($addPersonEvent, AddPersonEvent::ADD_PERSON_EVENT);
             }
 
-            $mailMessage = $person->getName() . ' ' . $person->getFirstname() . ' ' . $message;
-
-            // $this->addFlash('success', "$message");
             $this->addFlash('success', $person->getName() . ' ' . $message);
 
-            $mailer->send(content: $mailMessage);
             return $this->redirectToRoute('people');
         } else {
             return $this->render('people/add-person.html.twig', [
