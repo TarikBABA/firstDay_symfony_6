@@ -29,6 +29,7 @@ services:
           event: person.add,
           method: onAddPersonListener,
         }
+      # - { name: kernel.event_listener, event: kernel.request, priority: -2000 }
       - { name: kernel.event_listener, event: people, method: onListAllPerson }
       - {
           name: kernel.event_listener,

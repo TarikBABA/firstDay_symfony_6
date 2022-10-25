@@ -5,6 +5,7 @@ namespace App\EventListener;
 use App\Event\AddPersonEvent;
 use App\Event\ListAllEvent;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Event\KernelEvent;
 
 class PersonListener
 {
@@ -30,5 +31,10 @@ class PersonListener
     public function onListAllPerson2(ListAllEvent $event)
     {
         $this->logger->debug("2nd listener number of people in list is " . $event->getNbPeople());
+    }
+
+    public function onKernelRequest(KernelEvent $event)
+    {
+        dd($event->getRequest());
     }
 }
