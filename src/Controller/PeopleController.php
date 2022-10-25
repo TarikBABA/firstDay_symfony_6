@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\People;
+use App\Event\AddPersonEvent;
 use App\Form\PeopleType;
 use App\Service\Helpers;
 use Psr\Log\LoggerInterface;
@@ -20,6 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -32,7 +34,7 @@ class PeopleController extends AbstractController
         private LoggerInterface $logger,
         private Helpers $helper,
         // private MailerService $mailer
-
+        private EventDispatcherInterface $dispatcher
     ) {
     }
 
@@ -196,16 +198,21 @@ class PeopleController extends AbstractController
 
                 $person->setImage($uploaderService->uploadFile($imageFile, $directory));
             }
+            if ($new) {
+                $message = "a été ajouté avec succés";
+                $person->setCreatedBy($this->getUser());
+            } else {
+                $message = "a été edité avec succés";
+            }
 
             $manager = $doctrine->getManager();
             $manager->persist($person);
             $manager->flush();
 
             if ($new) {
-                $message = "a été ajouté avec succés";
-                $person->setCreatedBy($this->getUser());
-            } else {
-                $message = "a été edité avec succés";
+                $addPersonEvent = new AddPersonEvent($person); // Event Created
+                // ? here dispatch
+                $this->dispatcher->dispatch($addPersonEvent, AddPersonEvent::ADD_PERSON_EVENT);
             }
 
             $mailMessage = $person->getName() . ' ' . $person->getFirstname() . ' ' . $message;
