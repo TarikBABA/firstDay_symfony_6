@@ -29,6 +29,13 @@ services:
           event: person.add,
           method: onAddPersonListener,
         }
+      - { name: kernel.event_listener, event: people, method: onListAllPerson }
+      - {
+          name: kernel.event_listener,
+          event: people,
+          method: onListAllPerson2,
+          priority: 100,
+        }
 
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones

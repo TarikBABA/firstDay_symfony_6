@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\People;
 use App\Event\AddPersonEvent;
+use App\Event\ListAllEvent;
 use App\Form\PeopleType;
 use App\Service\Helpers;
 use Psr\Log\LoggerInterface;
@@ -45,6 +46,8 @@ class PeopleController extends AbstractController
     {
         $repository = $doctrine->getRepository(People::class);
         $people = $repository->findAll();
+        $listAllPersonEvent = new ListAllEvent(count($people));
+        $this->dispatcher->dispatch($listAllPersonEvent, ListAllEvent::LIST_PEOPLE_EVENT);
         return $this->render('people/index.html.twig', [
             'isPaginated' => false,
             'allPeople' => $people
