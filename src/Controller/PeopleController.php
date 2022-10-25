@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
-#[Route('/people')]
+#[Route('/people'), IsGranted('ROLE_USER')]
 class PeopleController extends AbstractController
 {
 
@@ -243,7 +243,7 @@ class PeopleController extends AbstractController
 
 
 
-    #[Route('/delete/{id}', name: 'delete.people')]
+    #[Route('/delete/{id}', name: 'delete.people'), IsGranted('ROLE_ADMIN')]
     public function deletePerson(People $person = null, ManagerRegistry $doctrine): RedirectResponse
     {
 

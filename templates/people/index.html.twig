@@ -20,14 +20,16 @@
 						<a href="{{ path('details.user', {id: person.id}) }}">
 							<i class="fa-solid fa-circle-info"></i>
 						</a>
+						{% if is_granted('ROLE_ADMIN') %}
 
-						<a href="{{ path('delete.people', {id: person.id}) }}">
-							<i class="fa-solid fa-user-xmark"></i>
-						</a>
+							<a href="{{ path('delete.people', {id: person.id}) }}">
+								<i class="fa-solid fa-user-xmark"></i>
+							</a>
 
-						<a href="{{ path('edit_people', {id: person.id}) }}">
-							<i class="fa-solid fa-user-pen"></i>
-						</a>
+							<a href="{{ path('edit_people', {id: person.id}) }}">
+								<i class="fa-solid fa-user-pen"></i>
+							</a>
+						{% endif %}
 					</div>
 
 				</div>

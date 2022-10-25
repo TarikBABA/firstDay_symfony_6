@@ -46,79 +46,92 @@
 						<i class="fas fa-user fa-fw"></i>
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-						<li>
-							<a class="dropdown-item" href="{{ path('app_login') }}">Login</a>
-						</li>
-						<li><hr class="dropdown-divider"/></li>
-						<li>
-							<a class="dropdown-item" href="{{ path('app_register') }}">Register</a>
-						</li>
-						<li><hr class="dropdown-divider"/></li>
-						<li>
-							<a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
-						</li>
+
+						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+							<li><hr class="dropdown-divider"/></li>
+							<li>
+								<a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+							</li>
+						{% else %}
+							<li>
+								<a class="dropdown-item" href="{{ path('app_login') }}">Login</a>
+							</li>
+							<li><hr class="dropdown-divider"/></li>
+							<li>
+								<a class="dropdown-item" href="{{ path('app_register') }}">Register</a>
+							</li>
+						{% endif %}
 					</ul>
 				</li>
 			</ul>
 		</nav>
 		<div id="layoutSidenav">
 			<div id="layoutSidenav_nav">
-				<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-					<div class="sb-sidenav-menu">
-						<div class="nav">
-							<div class="sb-sidenav-menu-heading">Core</div>
-							<a class="nav-link" href="">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-tachometer-alt"></i>
-								</div>
-								Dashboard
-							</a>
-							<div class="sb-sidenav-menu-heading">People</div>
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
-							<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-columns"></i>
-								</div>
-								Nav
-								<div class="sb-sidenav-collapse-arrow">
-									<i class="fas fa-angle-down"></i>
-								</div>
-							</a>
-							<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-								<nav class="sb-sidenav-menu-nested nav">
-									<a class="nav-link" href="{{ path('first') }}">First</a>
-									<a class="nav-link" href="{{ path('tab.users') }}">Users</a>
-								</nav>
-							</div>
-							<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-book-open"></i>
-								</div>
-								Person
 
-								<div class="sb-sidenav-collapse-arrow">
-									<i class="fas fa-angle-down"></i>
-								</div>
-							</a>
-							<div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-								<nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-									<a class="nav-link" href="{{ path('people') }}">
-										Liste Des Personnes
-									</a>
-									<a class="nav-link" href="{{ path('edit_people') }}">
+					<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+						<div class="sb-sidenav-menu">
+							<div class="nav">
+								<div class="sb-sidenav-menu-heading">Core</div>
+								<a class="nav-link" href="">
+									<div class="sb-nav-link-icon">
+										<i class="fas fa-tachometer-alt"></i>
+									</div>
+									Dashboard
+								</a>
+								<div class="sb-sidenav-menu-heading">People</div>
 
-										Ajouter une personne
-
-									</a>
+								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+									<div class="sb-nav-link-icon">
+										<i class="fas fa-columns"></i>
+									</div>
+									Nav
+									<div class="sb-sidenav-collapse-arrow">
+										<i class="fas fa-angle-down"></i>
+									</div>
+								</a>
+								<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+									<nav class="sb-sidenav-menu-nested nav">
+										<a class="nav-link" href="{{ path('first') }}">First</a>
+										<a class="nav-link" href="{{ path('tab.users') }}">Users</a>
+									</nav>
 								</div>
-							</div>
-							{% if app.user %}
-								<div class="sb-sidenav-footer mt-5">
-									<div class="small">Logged in as:</div>
-									{{app.user.email}}
+								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+									<div class="sb-nav-link-icon">
+										<i class="fas fa-book-open"></i>
+									</div>
+									People
 
+									<div class="sb-sidenav-collapse-arrow">
+										<i class="fas fa-angle-down"></i>
+									</div>
+								</a>
+								<div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+									<nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+										<a class="nav-link" href="{{ path('people') }}">
+											List OF People
+										</a>
+										{% if is_granted('ROLE_ADMIN') %}
+
+											<a class="nav-link" href="{{ path('edit_people') }}">
+
+												Add Person
+
+											</a>
+										{% endif %}
+									</div>
 								</div>
+								{% if app.user %}
+									<div class="sb-sidenav-footer mt-5">
+										<div class="small">Logged in as:</div>
+										{{app.user.email}}
+
+									</div>
+
+								{% endif %}
 							{% endif %}
+
 						</nav>
 					</div>
 
