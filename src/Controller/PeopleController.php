@@ -13,6 +13,7 @@ use App\Service\UploaderService;
 // *use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 //? use App\Repository\PeopleRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,7 +37,8 @@ class PeopleController extends AbstractController
     }
 
     //? Show All people 1 page
-    #[Route('/', name: 'people')]
+    #[Route('/', name: 'people'), IsGranted("ROLE_USER")]
+
     public function index(ManagerRegistry $doctrine): Response
     {
         $repository = $doctrine->getRepository(People::class);
@@ -167,7 +169,7 @@ class PeopleController extends AbstractController
         UploaderService $uploaderService,
         MailerService $mailer
     ): Response {
-
+        $this->denyAccessUnlessGranted("ROLE_ADMIN");
         $new = false;
 
         if (!$person) {
